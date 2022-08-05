@@ -17,7 +17,7 @@ listenerService.addListener = function (port) {
 		throw new Error(`Listener already exists: ${port}`);
 	}
 
-	const listener = new Listener(port);
+	const listener = new Listener(port, this);
 	listeners[port] = listener;
 	return listener;
 };

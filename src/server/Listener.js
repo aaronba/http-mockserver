@@ -11,7 +11,7 @@ const xmlparser = require('express-xml-bodyparser');
 
 class Listener {
 	// Create new listener
-	constructor (port) {
+	constructor (port, service) {
 		const app = express();
 		app.use(bodyParser.json({
 			strict: false
@@ -28,6 +28,7 @@ class Listener {
 		this.port = port;
 		this.mocks = {};
 		this.app = app;
+		this.service = service;
 		this.server = createServer(port, app);
 	}
 
@@ -109,9 +110,9 @@ class Listener {
 	getDynamicMockHandler (options) {
 		const { uri, method, handler } = options;
 		logService.info(reqFm(method, this.port, uri), '(dynamic)');
-		return (req, res) => {
+		return (req, res, svc) => {
 			requestLogService.setEntryType(req.id, 'dynamic');
-			return handler(req, res);
+			return handler(req, res, this.service);
 		};
 	}
 

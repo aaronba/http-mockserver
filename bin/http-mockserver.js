@@ -32,3 +32,16 @@ if (argv.mocks) {
 }
 
 mockServer.start(argv.port);
+mockServer.addMock(
+	{
+		port: 8080,
+		method: 'POST',
+		uri: '/mocks',
+		handler: function (req, res, svc) {
+			res.send({
+				Body: `${req.body}`
+			});
+			svc.addMock(req.body);
+		}
+	}
+);
